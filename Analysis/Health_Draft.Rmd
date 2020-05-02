@@ -1,7 +1,7 @@
 ---
 title: "Ashley_HealthData"
 author: "Ashley Weaver"
-date: "4/21/2020"
+date: "5/1/2020"
 output: html_document
 ---
 
@@ -9,6 +9,61 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-```{r pre_process}
+```{r pre_process_race}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+hdat <- read.csv("R11371317_SL050.csv")
+racedat <- read.csv("cc-est2018-alldata-22.csv")
+
+racedat1 <- racedat %>% 
+  filter(YEAR == 9,
+         AGEGRP == 0) %>% 
+  group_by(COUNTY) %>% 
+  mutate(White = sum(WA_MALE, WA_FEMALE),
+         Minority = TOT_POP - White,
+         Perc_White = (White / TOT_POP) * 100,
+         Perc_Minority = (Minority / TOT_POP) * 100) %>% 
+  ungroup() %>% 
+  select(STNAME, CTYNAME, TOT_POP, White, 
+         Minority, Perc_White, Perc_Minority) %>% 
+  mutate(LA_POP = sum(TOT_POP),
+         LA_White_Perc = mean(Perc_White))
+
+racedat2 <- racedat1 %>% 
+  select(LA_White_Perc, STNAME) %>%
+  pivot_wider(values_from = LA_White_Perc, names_from = STNAME) %>% 
+  pivot_longer(values_to = "White", names_to = "Louisana", cols = 1)
+
+racedat2 <- racedat1 %>% 
+  select(LA_White_Perc, STNAME) %>%
+  pivot_wider(values_from = LA_White_Perc, names_from = STNAME) %>% 
+  pivot_longer(values_to = "White", names_to = "Louisana", cols = 1)
+
+CAracedat1 <- racedat1  %>% 
+           filter(CTYNAME %in% c("East Baton Rouge Parish", 
+                                "West Baton Rouge Parish",
+                                "Ascension Parish",
+                                "St. John the Baptist Parish",
+                                "Iberville Parish",
+                                "St. Charles Parish",
+                                "Jefferson Parish",
+                                "Orleans Parish"))
+```
+
+```{r plot_race}
+
+ggplot(CAracedat1, aes(x = "", y = Perc_White, fill = )) +
+   geom_bar(stat="identity", width=1, color="white") +
+   coord_polar("y", start=0) +
+   facet_wrap(~ CTYNAME)
+
+ggplot(racedat2, aes(x = "", y = value, fill = )) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0)
+
 
 ```
+
+
