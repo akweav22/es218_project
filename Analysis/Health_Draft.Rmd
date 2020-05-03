@@ -34,12 +34,12 @@ racedat1 <- racedat %>%
 racedat2 <- racedat1 %>% 
   select(LA_White_Perc, STNAME) %>%
   pivot_wider(values_from = LA_White_Perc, names_from = STNAME) %>% 
-  pivot_longer(values_to = "White", names_to = "Louisana", cols = 1)
+  pivot_longer(values_to = "White", names_to = "Louisiana", cols = 1)
 
 racedat2 <- racedat1 %>% 
   select(LA_White_Perc, STNAME) %>%
   pivot_wider(values_from = LA_White_Perc, names_from = STNAME) %>% 
-  pivot_longer(values_to = "White", names_to = "Louisana", cols = 1)
+  pivot_longer(values_to = "Value", names_to = "Louisiana", cols = 1)
 
 CAracedat1 <- racedat1  %>% 
            filter(CTYNAME %in% c("East Baton Rouge Parish", 
@@ -54,14 +54,14 @@ CAracedat1 <- racedat1  %>%
 
 ```{r plot_race}
 
-ggplot(CAracedat1, aes(x = "", y = Perc_White, fill = )) +
-   geom_bar(stat="identity", width=1, color="white") +
-   coord_polar("y", start=0) +
-   facet_wrap(~ CTYNAME)
+ggplot(CAracedat1, aes(x = CTYNAME, y = Perc_White, fill = CTYNAME)) +
+   geom_bar(stat="identity", width=1, color="white")
 
-ggplot(racedat2, aes(x = "", y = value, fill = )) +
+ggplot(racedat2, aes(x = "", y = "Value", fill = "Louisiana")) +
   geom_bar(stat="identity", width=1, color="white") +
-  coord_polar("y", start=0)
+  coord_polar("y", start=0) +
+  theme_void() +
+  labs(fill = "Louisiana Races")
 
 
 ```

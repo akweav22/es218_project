@@ -1,0 +1,67 @@
+---
+title: "Ashley_HealthData"
+author: "Ashley Weaver"
+date: "5/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+## Exploring Potential Environmental Racism in Cancer Alley Louisiana
+
+Cancer Alley, Louisiana is an area along the Mississippi River between Baton Rouge and New Orleans. It derived its notorious nickname, Cancer Alley, from the abundance of oil refineries and petrochemical companies along the river. It is already known that this area has an unusually high rate of cancers, which is attributed to the air and water contamination by industry. Environmental Racism in Cancer Alley, Louisiana has previously been explored but mostly in terms of cancer. I will be exploring the other potential health risks that people living in Cancer Alley experience compared to the rest of Louisiana.
+
+The first portion of my analysis will focus on race data for counties that are considered to be part of Cancer Alley. These counties include: East Baton Rouge, West Baton Rouge, Ascension, St. John the Baptist, Iberville, St. Charles, Jefferson, and Orleans. My analysis will explore the differences in diversity of these areas compared to one another and the state as a whole. This will be followed by a discussion of the limitation of my racial analysis given the structure of the data. 
+
+The second portion of my analysis will be a review of 
+
+
+```{r pre_process_race, include = FALSE}
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+racedat <- read.csv("cc-est2018-alldata-22.csv")
+
+racedat1 <- racedat %>% 
+  filter(YEAR == 9,
+         AGEGRP == 0) %>% 
+  group_by(COUNTY) %>% 
+  mutate(White = sum(WA_MALE, WA_FEMALE),
+         Minority = TOT_POP - White,
+         Perc_White = (White / TOT_POP) * 100,
+         Perc_Minority = (Minority / TOT_POP) * 100) %>% 
+  ungroup() %>% 
+  select(STNAME, CTYNAME, TOT_POP, White, 
+         Minority, Perc_White, Perc_Minority) %>% 
+  mutate(LA_POP = sum(TOT_POP),
+         LA_White_Perc = mean(Perc_White))
+
+CAracedat1 <- racedat1  %>% 
+           filter(CTYNAME %in% c("East Baton Rouge Parish", 
+                                "West Baton Rouge Parish",
+                                "Ascension Parish",
+                                "St. John the Baptist Parish",
+                                "Iberville Parish",
+                                "St. Charles Parish",
+                                "Jefferson Parish",
+                                "Orleans Parish"))
+```
+
+```{r plot_race}
+
+ggplot(CAracedat1, aes(x = CTYNAME, y = Perc_White, fill = CTYNAME)) +
+   geom_bar(stat="identity", width=1, color="white")  +
+   labs(x = "County", y = "Percentage White", fill = "County") +
+   geom_abline(slope = 0, intercept = 64.5, col = "red")
+
+
+```
+
+![Source: Stepnick, Micheal. Industry & Infrastructure: Cancer Alley, LA and Detroit, MI. 2015](https://due-parsons.github.io/methods3-fall2015/img/industry-infrastructure-cancer-alley-la-and-detroit-mi/YXkdFV7.jpg)
+
+
+
+
