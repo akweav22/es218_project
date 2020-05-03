@@ -8,15 +8,18 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
-## Exploring Potential Environmental Racism in Cancer Alley Louisiana
+# Exploring Potential Environmental Racism in Cancer Alley, Louisiana
 
+## Introduction
 Cancer Alley, Louisiana is an area along the Mississippi River between Baton Rouge and New Orleans. It derived its notorious nickname, Cancer Alley, from the abundance of oil refineries and petrochemical companies along the river. It is already known that this area has an unusually high rate of cancers, which is attributed to the air and water contamination by industry. Environmental Racism in Cancer Alley, Louisiana has previously been explored but mostly in terms of cancer. I will be exploring the other potential health risks that people living in Cancer Alley experience compared to the rest of Louisiana.
 
+## Methods
 The first portion of my analysis will focus on race data for counties that are considered to be part of Cancer Alley. These counties include: East Baton Rouge, West Baton Rouge, Ascension, St. John the Baptist, Iberville, St. Charles, Jefferson, and Orleans. My analysis will explore the differences in diversity of these areas compared to one another and the state as a whole. This will be followed by a discussion of the limitation of my racial analysis given the structure of the data. 
 
 The second portion of my analysis will be a review of 
 
 
+## Results and Discussion
 ```{r pre_process_race, include = FALSE}
 
 library(dplyr)
@@ -60,8 +63,15 @@ ggplot(CAracedat1, aes(x = CTYNAME, y = Perc_White, fill = CTYNAME)) +
 
 ```
 
-![Source: Stepnick, Micheal. Industry & Infrastructure: Cancer Alley, LA and Detroit, MI. 2015](https://due-parsons.github.io/methods3-fall2015/img/industry-infrastructure-cancer-alley-la-and-detroit-mi/YXkdFV7.jpg)
+<img src="https://due-parsons.github.io/methods3-fall2015/img/industry-infrastructure-cancer-alley-la-and-detroit-mi/YXkdFV7.jpg"  width = "300"  height = "200">
 
 
+```{r pro_process_health}
 
+hdat <- read.csv("R11371317_SL050.csv")
 
+```
+
+# References
+
+Stepnick, Micheal. Industry & Infrastructure: Cancer Alley, LA and Detroit, MI. 2015

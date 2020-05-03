@@ -55,7 +55,9 @@ CAracedat1 <- racedat1  %>%
 ```{r plot_race}
 
 ggplot(CAracedat1, aes(x = CTYNAME, y = Perc_White, fill = CTYNAME)) +
-   geom_bar(stat="identity", width=1, color="white")
+   geom_bar(stat="identity", width=1, color="white")  +
+   labs(x = "County", y = "Percentage White", fill = "County")+
+   geom_line()
 
 ggplot(racedat2, aes(x = "", y = "Value", fill = "Louisiana")) +
   geom_bar(stat="identity", width=1, color="white") +
@@ -66,4 +68,5 @@ ggplot(racedat2, aes(x = "", y = "Value", fill = "Louisiana")) +
 
 ```
 
+![Source: Stepnick, Micheal. Industry & Infrastructure: Cancer Alley, LA and Detroit, MI. 2015](https://due-parsons.github.io/methods3-fall2015/img/industry-infrastructure-cancer-alley-la-and-detroit-mi/YXkdFV7.jpg)
 
