@@ -74,6 +74,24 @@ ggplot(hdatdeath1) + aes(sample = LifeLost) +
   geom_qq(distribution = qnorm) +
   geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + ylab("Life Lost")
 
+hdatchild <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(ChildMortality = "SE_NV006_002", CTYNAME = "Geo_NAME") %>% 
+  arrange(ChildMortality)
+
+ggplot(hdatchild) + aes(sample = ChildMortality) + 
+  geom_qq(distribution = qnorm) +
+  geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + 
+  ylab("Child Mortality Rate per 1,000 Population")
+
+hdatobese <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(Perc_Obese = "SE_T012_003", CTYNAME = "Geo_NAME") %>% 
+  arrange(Perc_Obese)
+
+USmeanObesity <- mean(hdat$SE_T012_003)
+USmeanChildMortality <- mean(hdat$SE_NV006_002, na.rm = TRUE)
+
 
 ```
 

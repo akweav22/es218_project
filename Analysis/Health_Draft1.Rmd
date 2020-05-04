@@ -1,7 +1,7 @@
 ---
 title: "Exploring Potential Environmental Racism in Cancer Alley, Louisiana"
 author: "Ashley Weaver"
-date: "5/1/2020"
+date: "May 2020"
 output: 
   html_document:
     toc: true
@@ -14,14 +14,23 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
 ## Introduction
+
 Cancer Alley, Louisiana is an area along the Mississippi River between Baton Rouge and New Orleans. It derived its notorious nickname, Cancer Alley, from the abundance of oil refineries and petrochemical companies along the river. It is already known that this area has an unusually high rate of cancers, which is attributed to the air and water contamination by industry. Environmental Racism in Cancer Alley, Louisiana has previously been explored but mostly in terms of cancer. I will be exploring the other potential health risks that people living in Cancer Alley experience compared to the rest of Louisiana. I will also look at other factors that could explain differences in quality of health by county.
 
+Cancer Instances
+
+It is important to note that this study is limited to looking at data by counties, though Cancer Alley itself is not entire counties. Populations that are closer to the industries and the Mississippi River (where these industries dump waste) are more likely to be impacted in terms of health. Since the study looks at health in Louisiana at a county level, it is possible that the adverse health impacts to communities on the river will not be reflected by the county-wide data.
+
+
 ## Methods
+
+Overall packages used
+
 The first portion of my analysis will focus on race data for counties that are considered to be part of Cancer Alley. These counties include: East Baton Rouge, West Baton Rouge, Ascension, St. John the Baptist, Iberville, St. Charles, Jefferson, and Orleans. My analysis will explore the differences in diversity of these areas compared to one another and the state as a whole. This will be followed by a discussion of the limitation of my racial analysis given the structure of the data. 
 
-The second part of my analysis will look at race and health data in the entire state of Louisiana. This portion of the analysis will focus on finding corrolation between poor health and percentage of minorities in a county. This will include scatter plots that examine health as a function of percentage of minorities in the community. This will give a more hollistic view of Louisiana's health by race. These data will then be compared to other states in the United States to 
+The second part of my analysis will look at race and health data in the entire state of Louisiana. This portion of the analysis will focus on finding corrolation between poor health and percentage of minorities in a county. This will include a scatter plot that examines health as a function of percentage of minorities in the community. This will give a more hollistic view of Louisiana's health by race. This will be followed by theoretical qq-plots to assess the normality of the data and isolate particular counties in Louisiana that appear to be in worse health. The health data will then be compared to other states in the United States to assess Louisiana's statewide health compared to national health.
 
-The third part of my analysis will focus primarily on the health 
+The third part of my analysis will focus primarily on the health in that counties thata are part of Cancer Alley.
 
 The final portion of my analysis will review other factors that could be contributing to adverse health effects. This will involved a 
 
@@ -30,16 +39,22 @@ The final portion of my analysis will review other factors that could be contrib
 
 ### Cancer Alley Race Data
 
-The first plot is a bar plot comparing the percentage white population in all the Cancer Alley counties. The red line on this plot represents the average percentage of white residents in each county, which is `round(racedat1$LA_White_Perc)`. 
-```{r pre_process_race, include = FALSE}
+```{r packages, include = FALSE}
 
 library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(lattice)
 
+```
+
+```{r pre_process_race}
+
+# Loading Race and Heatlh Datasets
+hdat <- read.csv("../Data/R11371317_SL050.csv")
 racedat <- read.csv("../Data/cc-est2018-alldata-22.csv")
 
+# Organizing Race Dataset for Louisiana
 racedat1 <- racedat %>% 
   filter(YEAR == 9,
          AGEGRP == 0) %>% 
@@ -54,6 +69,7 @@ racedat1 <- racedat %>%
   mutate(LA_POP = sum(TOT_POP),
          LA_White_Perc = mean(Perc_White))
 
+# Creating Race Dataset for only Cancer Alley
 CAracedat1 <- racedat1  %>% 
            filter(CTYNAME %in% c("East Baton Rouge Parish", 
                                 "West Baton Rouge Parish",
@@ -65,8 +81,11 @@ CAracedat1 <- racedat1  %>%
                                 "Orleans Parish"))
 ```
 
+The first plot is a bar plot comparing the percentage white population in all the Cancer Alley counties. The red line on this plot represents the average percentage of white residents in each county, which is 65%. Of the counties that are part of Cancer Alley, five have a lower percentage of white population than the rest of the state of Louisiana. These five counties include East Baton Rouge, Iberville, Orleans, St. John the Baptist, and West Baton Rouge. These data suggest that much of the population that lives in Cancer Alley is not white. As previous studies have implicated Cancer Alley as a location with high levels of environmental racism, it should be expected that these communities are largely comprised of minorities. The fact that three of these counties (Asencions, Jefferson, and St. Charles) have a higher percentage white population than the rest of the state is more than I expected.
+
 ```{r plot_race, fig.width=7, fig.height=3.4}
 
+# Generating bar plot comparing percentage white populations in Cancer Alley
 ggplot(CAracedat1, aes(x = CTYNAME, y = Perc_White, fill = CTYNAME)) +
    geom_bar(stat="identity", width=1, color="white")  +
    labs(x = "County", y = "Percentage White", fill = "County") +
@@ -74,74 +93,93 @@ ggplot(CAracedat1, aes(x = CTYNAME, y = Perc_White, fill = CTYNAME)) +
    geom_text(aes(label= round(Perc_White)), 
              position=position_dodge(width=0.9), vjust=-0.25)
 
-
 ```
 
+Due to the high percentage white population in Ascension, Jefferson, and St. Charles, I found a more precise map of race along Cancer Alley which is shown below.
+
 <img src="https://due-parsons.github.io/methods3-fall2015/img/industry-infrastructure-cancer-alley-la-and-detroit-mi/YXkdFV7.jpg"  width = "400"  height = "300">
+
+The above image shows the percentage of the population along the Mississippi River (Cancer Alley) that is black, while also indicating the locations of major industrial sites along the river. It appears that many of these industrial sites are located in areas with high percentages of black populations from 60-100%. The proximity of these majority black communities to industrial sites is an indication of environmental racism.
+
+It is important to note the difference in the discoveries of my own graph and those in the above image. While the image clearly points to environmental racism, my graph suggests that only some of the counties that comprise Cancer Alley are majority non-White. The reason for this discrepancy is that the image looks at a smaller than county level. The health data is limited to the county level and can not be broken down into smaller increments. This highlights one of the limitations of this study, which is that amoung a county there can be a very high variability amoung the data. While the image clearly shows high percentages of black populations near industrial sites, my data looks at the diversity of the entire counties which extend miles from the Mississippi River and these industrial sites. 
+
+The limitation of this dataset of being broken down by county, instead of even smaller regions, will be important to the rest of the analysis. While people along the Mississippi River may experience adverse health impacts, this may not be reflected in the health data as it will be diluted by the rest of the counties health.
 
 ### Comparing Race and Health Data for the Entire State of Louisiana
 ```{r pre_process_racehealth}
 
-hdat <- read.csv("../Data/R11371317_SL050.csv")
-
+# Creating table of Poor Health Data in Louisiana by county
 hdat4 <- hdat %>% 
   filter(Geo_STATE == 22) %>% 
-  select(PoorHealth = "SE_T002_001", CTYNAME = "Geo_NAME")
+  select(PoorHealth = "SE_T002_001", CTYNAME = "Geo_NAME") %>% 
+  arrange(PoorHealth)
 
+# Generating table of percentage minority by county 
 racedat4 <- racedat1 %>% 
   select(CTYNAME, Perc_Minority)
 
+# Generating a combined table of race and poor health data
 rhcombined <- left_join(hdat4, racedat4, by = "CTYNAME")
 
 ```
 
-```{r minorityhealth_scatter}
+It is important to understand the overall health of minorities in Louisiana to assess whether there is environmental racism. The below chart plots the percentage of minorities against the percentage of poor heatlh by county.
 
+```{r minorityhealth_scatter, fig.height = 3.5, fig.width = 3.5}
+
+# Plotting the Percentage of Minorities against Percentage of Poor Health Reported in Louisiana
 ggplot(rhcombined, aes(x= `Perc_Minority`, y = `PoorHealth`)) + 
              geom_point() + 
-             geom_abline( intercept=15, slope=0.20) + 
+             geom_abline(intercept=15, slope=0.20) + 
              labs(x = "Percent Minority Population", 
                   y = "Percentage of Fair to Poor Health Reported")
 
 ```
 
-#### Analylizing Data Distributions
-```{r pre_process_qqplot_Health}
+The above plot demonstrates that there is a corrolation between percentage minorities and poor health. The plot suggests that as the percentage of minorities in the population increases the percentage of fair to poor health reported also increases. This suggests that overall, in the state of Louisiana, there could be a connection between poor health and the counties with more minorities. Environmental racism is a potential explaination for this trend, but the potential causes for the fair to poor health of the minorities would need to be evaluated. The "Other Factors that could be Impacting Health" section will further discuss potential reasons for this trend.
 
+#### Analylizing Data Distributions
+
+To determine if there were any regions in Louisiana that were particular outliers in terms of poor health or premature deaths, I created qq-plots of these data. Considering previous findings in Cancer Alley of negative health effects, I expected to find outliers in these data for the counties in Cancer Alley. Though there were some outliers in both the poor health and premature death data, niether indicated any of the counties in Cancer Alley as outliers. 
+
+```{r qqplot_PoorHealth, fig.height = 2.5, fig.width = 3.5}
+
+# Theoretical QQ Plot of Fair to Poor Health Data 
 ggplot(rhcombined) + aes(sample = PoorHealth) + geom_qq(distribution = qnorm) +
   geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + ylab("Poor Health")
 
-
 ```
 
-```{r qqtest_prematuredeath}
+The plot above shows that the Fair to Poor Health data has a relatively normal distribution with the exception of 3 counties. These three counties are Tensas, Madison, and East Carroll, none of which are part of or nearby Cancer Alley. Looking at the next Theoretical QQ plot of premature deaths helps direct attention to a possible explaination for these outliers.
 
+```{r qqtest_prematuredeath, fig.height = 2.5, fig.width = 3.5}
+
+# Creating Dataset of Premature death by County 
 hdatdeath <- hdat %>% 
   filter(Geo_STATE == 22) %>% 
   select(PrematureDeath = "SE_T007_001", CTYNAME = "Geo_NAME") %>% 
   arrange(PrematureDeath)
-  
+
+# Theoretical QQ Plot of Premature Death Data 
 ggplot(hdatdeath) + aes(sample = PrematureDeath) + 
   geom_qq(distribution = qnorm) +
   geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + ylab("Premature Deaths")
 
-hdatchild <- hdat %>% 
-  filter(Geo_STATE == 22) %>% 
-  select(ChildMortality = "SE_NV006_002", CTYNAME = "Geo_NAME") %>% 
-  arrange(ChildMortality)
+```
 
-ggplot(hdatchild) + aes(sample = ChildMortality) + 
-  geom_qq(distribution = qnorm) +
-  geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + 
-  ylab("Child Mortality Rate per 1,000 Population")
+The theoretical QQ plot of premature deaths in Louisiana show that these data do not have a normal distribution. Deaths were considered to be Premature if they were before the age of 75. Interestingly, Tensas has the second lowest, East Carroll has the third lowest, and Madison has the eighth lowest number of premature deaths. Considering the last QQ plot, where these counties were outliers for having higher reported percentages of fair to poor health, it would be expected for these counties to likely have higher levels of premature deaths. The reason these counties have such a lower premature death count is because they have much smaller total populations than many of the other counties in Louisiana. This could also be a potential explaination for why they had higher percentages of fair to poor health, because their just were not as many data points for people as the counties are smaller. This means that each persons response in these counties impacts the overall county health evaluation more than peoples responses in larger counties. The upper three outliers on the theoretical QQ plot of premature deaths were Jefferson, East Baton Rouge, and Orleans. All of these counties are a part of Cancer Alley, but they also all have very large population sizes compared to the other counties in Louisiana, which is likely the explanation of their much higher number of premature deaths. 
 
-hdatobese <- hdat %>% 
-  filter(Geo_STATE == 22) %>% 
-  select(Perc_Obese = "SE_T012_003", CTYNAME = "Geo_NAME") %>% 
-  arrange(Perc_Obese)
+#### Louisiana Health Compared to Health in the United States
 
-USmeanObesity <- mean(hdat$SE_T012_003)
-USmeanChildMortality <- mean(hdat$SE_NV006_002, na.rm = TRUE)
+```{r pre_process_USmedian_polish, fig.height = 2.5, fig.width = 3.5}
+
+hdatUS <- hdat %>% 
+  select(PoorHealth = "SE_T002_001", State = "Geo_STATE", 
+         County = "Geo_QNAME") %>% 
+  arrange(State) %>% 
+  na.omit() %>% 
+  mutate(State_mean = mean(PoorHealth))
+
 
 ```
 
