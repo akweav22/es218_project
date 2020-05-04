@@ -229,3 +229,41 @@ ggplot(hdatUS, aes(x = State, y = State_Obese, fill = State)) +
 Looking at these plots it is very clear that, compared to other U.S. states, the population in Louisiana overall has some of the worst health. The first plot indicates that Louisiana is in the top 5 states that had the highest reported fair or poor health. The second plot indicates that Louisiana has the seventh highest Premature Mortality Rate per 100,000 population of all the US States. The third plot indicates that Louisiana has the second highest percentage obese persons of all of the US States. 
 
 The high rates of poor health, premature deaths, and obesity suggest that Louisiana is in much worse health by comparison to other U.S. states. The poor overall health of Louisiana could possibly have connections to their weak environmental regulations, which enable industrial waste to contaminate their air and water. That said, further research would be needed to fully demonstrate a link between their lack of environmental regulation and adverse health impacts.
+### Cancer Alley Health Data
+
+The next plot will hone in on health data specifically in Cancer Alley, Louisiana to determine if there is a correlation between poor health and these counties. The navy blue line represents the average percent reported fair or poor health in all of the United States. The red line represents the average percent reported fair or poor health in the state of Louisiana.
+
+```{r CA_Health, fig.width=7, fig.height=3.4}
+
+# Creating table of Cancer Alley Health Data
+CA_Health <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(PoorHealth = "SE_T002_001", Perc_Obese = "SE_T012_003",
+         PrematureMortality = "SE_NV006_003", CTYNAME = "Geo_NAME") %>% 
+  filter(CTYNAME %in% c("East Baton Rouge Parish", 
+                        "West Baton Rouge Parish",
+                        "Ascension Parish",
+                        "St. John the Baptist Parish",
+                        "Iberville Parish",
+                        "St. Charles Parish",
+                        "Jefferson Parish",
+                        "Orleans Parish"))
+
+# Calculating the mean poor health in the U.S. and Louisiana
+USmeanPoorHealth <- mean(hdat$SE_T002_001, na.rm = TRUE)
+LouisianaPoorHealth <- mean(hdat4$PoorHealth)
+
+# Generating bar blot of Cancer Alley Poor Health with Louisiana and U.S. Poor Health Averages
+ggplot(CA_Health, aes(x = CTYNAME, y = PoorHealth, fill = CTYNAME)) +
+   geom_bar(stat="identity", width=1, color="white")  +
+   labs(x = "County", y = "Percent Reported Fair or Poor Health", 
+        fill = "County") +
+   geom_abline(slope = 0, intercept = 16.9, col = "red") +
+   geom_abline(slope = 0, intercept = 22.5, col = "navyblue") +
+   geom_text(aes(label= round(PoorHealth)), 
+             position=position_dodge(width=0.9), vjust=-0.25)
+
+
+```
+
+The percentage of poor health in Cancer Alley, Louisiana counties is at or above the poor health reported in the United States. That said, most percentages of fair or poor health reported in these counties are below the average for Louisiana. This indicates that there tend to be higher levels of poor health in Louisiana than in the United States. Whether poor health is, in fact, affected by living in Cancer Alley can not be determined by this graph. The health impacts of living in Cancer Alley would need to be assessed at a level that is smaller than the county level to definitively convey adverse health impacts on the communities in and closest to the Cancer Alley region along the Mississippi River.
