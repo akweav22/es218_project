@@ -39,7 +39,6 @@ The third part of my analysis will focus primarily on the health in the counties
 The final portion of my analysis will review other factors that could be contributing to adverse health effects. This will involve an evaluation of the potential impact of lack of health insurance on Louisiana. This will be demonstrated through box plots that will compare the lack of insurance by age in the US and lack of insurance by age in Louisiana. Comparing the difference between National lack of insurance to just state lack of insurance in Louisiana will give us a better idea of if insurance (or lack thereof) can be used to explain the health disparity between most U.S. States and Louisiana. Next, this section will explore potential causes of obesity in Louisiana, which is shown in section 2 ("Comparing Race and Health Data for the Entire State of Louisiana") to have the second highest rate of obesity in the US. This analysis will involve the use of scatterplots to compare obesity in Louisiana to access to healthy foods and physical inactivity.
 
 
-
 ## Results and Discussion
 
 ### Cancer Alley Race Data
@@ -357,5 +356,32 @@ The slope of the data shown on the right plot indicates that a 1% increase in in
 Though there has been previous research indicating a correlation between poor health and living in Cancer Alley, Louisiana, these data do not indicate this relationship. It appears that though minority communities do experience a higher degree of health issues, there is no demonstrated correlation by these data of minorities in Cancer Alley experiencing adverse health impacts greater than other counties. Other factors that could be impacting health in Louisiana could include a lack of insurance for those between the ages of 18 and 64, and high levels of physical inactivity. 
 
 Further research would need to be conducted to demonstrate negative health impacts, other than cancers, in these regions. This study was limited to county wide data, though Stepnicks plot showed that closer to the Mississippi River there were higher percentages of black populations. This means that black populations tend to live closer to these industrial sites, but the county as a whole could be much more diverse. Similarly, the data for poor health in Cancer Alley was limited to entire communities, though the people that are most directly impacted live right on the Mississippi River. I suspect that these black populations living in Cancer Alley right next to the industrial sites would have a high level of other non-cancer health issues, but further research would be needed to make such conclusions. Future studies would need to isolate smaller regions within each county for analysis. This could involve breaking down the health data by zip code. It would be very effective to analyze health and diversity as a function of distance from these industrial sites (though data collection for this might be challenging).
+
+## References
+  
+  Census. (2019). County Characteristics Resident Population Estimates. US Census Bureau, Population Division. Retrived from: https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html
+
+  H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
+Springer-Verlag New York, 2016.
+
+  Hadley Wickham and Lionel Henry (2020). tidyr: Tidy Messy Data. R
+package version 1.0.2. https://CRAN.R-project.org/package=tidyr
+  
+  Hadley Wickham, Romain François, Lionel Henry and Kirill Müller
+(2020). dplyr: A Grammar of Data Manipulation. R package version
+0.8.4. https://CRAN.R-project.org/package=dplyr
+
+  Pasley, James. “Inside Louisiana's Horrifying 'Cancer Alley,' an 85-Mile Stretch of Pollution and Environmental Racism That's Now Dealing with Some of the Highest Coronavirus Death Rates in the Country.” Business Insider, Business Insider, 9 Apr. 2020, www.businessinsider.com/louisiana-cancer-alley-photos-oil-refineries-chemicals-pollution-2019-11.
+  
+  R Core Team (2018). R: A language and environment for statistical
+computing. R Foundation for Statistical Computing, Vienna, Austria.
+URL https://www.R-project.org/.
+  
+  Stepnick, Micheal. (2015). Industry & Infrastructure: Cancer Alley, LA and  Detroit, MI. Retrived from:  
+https://due-parsons.github.io/methods3-fall2015/projects/industry-infrastructure-cancer-alley-la-and-detroit-mi/
+
+  “These States Have the Least Amount of Pollution.” U.S. News &amp; World Report, U.S. News &amp; World Report, www.usnews.com/news/best-states/rankings/natural-environment/pollution.
+
+
 
 
