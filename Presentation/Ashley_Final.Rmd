@@ -110,3 +110,122 @@ It is important to note the difference in the discoveries of my own graph and th
 
 The limitation of this dataset of being broken down by county, instead of even smaller regions, will be important to the rest of the analysis. While people along the Mississippi River may experience adverse health impacts, this may not be reflected in the health data as it will be diluted by the rest of the county's health.
 
+
+### Comparing Race and Health Data for the Entire State of Louisiana
+```{r pre_process_racehealth}
+
+# Creating table of Poor Health Data in Louisiana by county
+hdat4 <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(PoorHealth = "SE_T002_001", CTYNAME = "Geo_NAME") %>% 
+  arrange(PoorHealth)
+
+# Generating table of percentage minority by county 
+racedat4 <- racedat1 %>% 
+  select(CTYNAME, Perc_Minority)
+
+# Generating a combined table of race and poor health data
+rhcombined <- left_join(hdat4, racedat4, by = "CTYNAME")
+
+```
+
+It is important to understand the overall health of minorities in Louisiana to assess whether there is environmental racism. The below chart plots the percentage of minorities against the percentage of poor health by county.
+
+```{r minorityhealth_scatter, fig.height = 3.5, fig.width = 3.5}
+
+# Plotting the Percentage of Minorities against Percentage of Poor Health Reported in Louisiana
+ggplot(rhcombined, aes(x= `Perc_Minority`, y = `PoorHealth`)) + 
+             geom_point() + 
+             stat_smooth(method = "loess", se = FALSE, span = 1) +                          geom_abline(intercept=15, slope=0.20) + 
+             labs(x = "Percent Minority Population", 
+                  y = "Percentage of Fair to Poor Health Reported")
+
+```
+
+The above plot demonstrates that there is a correlation between percentage minorities and poor health. The plot has both a linear slope and a loess fit to determine if a linear slope best represents the data. The loess fit follows the linear slope pretty well until the last portion of the data where it increases because of the three outliers. The plot suggests that as the percentage of minorities in the population increases the percentage of fair to poor health reported also increases. This suggests that overall, in the state of Louisiana, there could be a connection between poor health and the counties with more minorities. Environmental racism is a potential explanation for this trend, but the potential causes for the fair to poor health of the minorities would need to be evaluated. The "Other Factors that could be Impacting Health" section will further discuss potential reasons for this trend.
+
+#### Analylizing Data Distributions
+
+To determine if there were any regions in Louisiana that were particular outliers in terms of poor health or premature deaths, I created qq-plots of these data. Considering previous findings in Cancer Alley of negative health effects, I expected to find outliers in these data for the counties in Cancer Alley. Though there were some outliers in both the poor health and premature death data, neither indicated any of the counties in Cancer Alley as outliers. 
+
+```{r qqplot_PoorHealth, fig.height = 2.5, fig.width = 3.5}
+
+# Theoretical QQ Plot of Fair to Poor Health Data 
+ggplot(rhcombined) + aes(sample = PoorHealth) + geom_qq(distribution = qnorm) +
+  geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + ylab("Poor Health")
+
+```
+
+The plot above shows that the Fair to Poor Health data has a relatively normal distribution with the exception of 3 counties. These three counties are Tensas, Madison, and East Carroll, none of which are part of or nearby Cancer Alley. Looking at the next Theoretical QQ plot of premature deaths helps direct attention to a possible explanation for these outliers.
+
+```{r qqtest_prematuredeath, fig.height = 2.5, fig.width = 3.5}
+
+# Creating Dataset of Premature death by County 
+hdatdeath <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(PrematureDeath = "SE_T007_001", CTYNAME = "Geo_NAME") %>% 
+  arrange(PrematureDeath)
+
+# Theoretical QQ Plot of Premature Death Data 
+ggplot(hdatdeath) + aes(sample = PrematureDeath) + 
+  geom_qq(distribution = qnorm) +
+  geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + ylab("Premature Deaths")
+
+```
+
+The theoretical QQ plot of premature deaths in Louisiana shows that these data do not have a normal distribution. Deaths were considered to be Premature if they were before the age of 75. Interestingly, Tensas has the second lowest, East Carroll has the third lowest, and Madison has the eighth lowest number of premature deaths. Considering the last QQ plot, where these counties were outliers for having higher reported percentages of fair to poor health, it would be expected for these counties to likely have higher levels of premature deaths. The reason these counties have such a lower premature death count is because they have much smaller total populations than many of the other counties in Louisiana. This could also be a potential explanation for why they had higher percentages of fair to poor health, because there just were not as many data points for people as the counties are smaller. This means that each person's response in these counties impacts the overall county health evaluation more than people's responses in larger counties. The upper three outliers on the theoretical QQ plot of premature deaths were Jefferson, East Baton Rouge, and Orleans. All of these counties are a part of Cancer Alley, but they also all have very large population sizes compared to the other counties in Louisiana, which is likely the explanation of their much higher number of premature deaths. 
+
+#### Louisiana Health Compared to Health in the United States
+
+```{r pre_process_USmeans, fig.height = 2.5, fig.width = 3.5}
+
+# Health Dataset with mean values for all of the United States
+hdatUS <- hdat %>% 
+  select(PoorHealth = "SE_T002_001", State = "Geo_STATE", 
+         County = "Geo_QNAME", PrematureMortality = "SE_NV006_003", 
+         Perc_Obese = "SE_T012_003") %>% 
+  arrange(State) %>% 
+  group_by(State) %>% 
+  na.omit() %>% 
+  mutate(State_PoorHealth = mean(PoorHealth), State_Obese = mean(Perc_Obese),
+         State_PrematureMortality = mean(PrematureMortality)) %>% 
+  select(State, State_PoorHealth, State_Obese, State_PrematureMortality) %>% 
+  distinct()
+
+```
+
+The next three plots will compare the health of Louisiana to other U.S. states. The red line on all the plots indicates the value that corresponds with the state of Louisiana. The states are numbered but do not labelled, as the focus is solely on the state of Louisiana compared to the other states. The spaces where there are bars missing indicate a lack of health data for these 5 states.
+
+```{r barplots_UShealth, fig.height = 2.5, fig.width = 5}
+
+# Generates plot of Average Percent of Adults That Report Fair or Poor Health by State
+ggplot(hdatUS, aes(x = State, y = State_PoorHealth, fill = State)) +
+         geom_bar(stat = "identity") +
+         coord_flip() + 
+         geom_vline(xintercept = 22, col = "red", alpha = 0.4) +
+         scale_y_continuous(
+           name = "Average Percent of Adults That Report Fair or Poor Health")
+
+# Generates plot of Premature Age-adjusted Mortality Rate per 100,000 Population by State
+ggplot(hdatUS, aes(x = State, y = State_PrematureMortality, fill = State)) +
+         geom_bar(stat = "identity") +
+         coord_flip() + 
+         geom_vline(xintercept = 22, col = "red", alpha = 0.4) +
+         scale_y_continuous(
+           name = 
+             "Premature Age-adjusted Mortality Rate per 100,000 Population")
+
+# Generates plot of Percent Obese Persons (20 Years and Over) by State
+ggplot(hdatUS, aes(x = State, y = State_Obese, fill = State)) +
+         geom_bar(stat = "identity") +
+         coord_flip() + 
+         geom_vline(xintercept = 22, col = "red", alpha = 0.4) +
+         scale_y_continuous(
+           name = 
+             "Percent Obese Persons (20 Years and Over)")
+
+```
+
+Looking at these plots it is very clear that, compared to other U.S. states, the population in Louisiana overall has some of the worst health. The first plot indicates that Louisiana is in the top 5 states that had the highest reported fair or poor health. The second plot indicates that Louisiana has the seventh highest Premature Mortality Rate per 100,000 population of all the US States. The third plot indicates that Louisiana has the second highest percentage obese persons of all of the US States. 
+
+The high rates of poor health, premature deaths, and obesity suggest that Louisiana is in much worse health by comparison to other U.S. states. The poor overall health of Louisiana could possibly have connections to their weak environmental regulations, which enable industrial waste to contaminate their air and water. That said, further research would be needed to fully demonstrate a link between their lack of environmental regulation and adverse health impacts.
