@@ -46,9 +46,67 @@ The final portion of my analysis will review other factors that could be contrib
 
 ```{r packages, include = FALSE}
 
+# Attaching Packages
 library(dplyr)
 library(ggplot2)
 library(tidyr)
 
 ```
+
+```{r pre_process_race}
+
+# Loading Race and Heatlh Datasets
+hdat <- read.csv("../Data/R11371317_SL050.csv")
+racedat <- read.csv("../Data/cc-est2018-alldata-22.csv")
+
+# Organizing Race Dataset for Louisiana
+racedat1 <- racedat %>% 
+  filter(YEAR == 9,
+         AGEGRP == 0) %>% 
+  group_by(COUNTY) %>% 
+  mutate(White = sum(WA_MALE, WA_FEMALE),
+         Minority = TOT_POP - White,
+         Perc_White = (White / TOT_POP) * 100,
+         Perc_Minority = (Minority / TOT_POP) * 100) %>% 
+  ungroup() %>% 
+  select(STNAME, CTYNAME, TOT_POP, White, 
+         Minority, Perc_White, Perc_Minority) %>% 
+  mutate(LA_POP = sum(TOT_POP),
+         LA_White_Perc = mean(Perc_White))
+
+# Creating Race Dataset for only Cancer Alley
+CAracedat1 <- racedat1  %>% 
+           filter(CTYNAME %in% c("East Baton Rouge Parish", 
+                                "West Baton Rouge Parish",
+                                "Ascension Parish",
+                                "St. John the Baptist Parish",
+                                "Iberville Parish",
+                                "St. Charles Parish",
+                                "Jefferson Parish",
+                                "Orleans Parish"))
+```
+
+The first plot is a bar plot comparing the percentage white population in all the Cancer Alley counties. The red line on this plot represents the average percentage of white residents in each county, which is 65%. Of the counties that are part of Cancer Alley, five have a lower percentage of white population than the rest of the state of Louisiana. These five counties include East Baton Rouge, Iberville, Orleans, St. John the Baptist, and West Baton Rouge. These data suggest that much of the population that lives in Cancer Alley is not white. As previous studies have implicated Cancer Alley as a location with high levels of environmental racism, it should be expected that these communities are largely composed of minorities. The fact that three of these counties (Ascension, Jefferson, and St. Charles) have a higher percentage white population than the rest of the state is more than I expected.
+
+```{r plot_race, fig.width=7, fig.height=3.4}
+
+# Generating bar plot comparing percentage white populations in Cancer Alley
+ggplot(CAracedat1, aes(x = CTYNAME, y = Perc_White, fill = CTYNAME)) +
+   geom_bar(stat="identity", width=1, color="white")  +
+   labs(x = "County", y = "Percentage White", fill = "County") +
+   geom_abline(slope = 0, intercept = 64.5, col = "red") +
+   geom_text(aes(label= round(Perc_White)), 
+             position=position_dodge(width=0.9), vjust=-0.25)
+
+```
+
+Due to the high percentage white population in Ascension, Jefferson, and St. Charles, I found a more precise map of race along Cancer Alley which is shown below.
+
+<img src="https://due-parsons.github.io/methods3-fall2015/img/industry-infrastructure-cancer-alley-la-and-detroit-mi/YXkdFV7.jpg"  width = "400"  height = "300">
+
+The above image shows the percentage of the population along the Mississippi River (Cancer Alley) that is black, while also indicating the locations of major industrial sites along the river. It appears that many of these industrial sites are located in areas with high percentages of black populations from 60-100%. The proximity of these majority black communities to industrial sites is an indication of environmental racism.
+
+It is important to note the difference in the discoveries of my own graph and those in the above image. While the image clearly points to environmental racism, my graph suggests that only some of the counties that comprise Cancer Alley are majority non-White. The reason for this discrepancy is that the image looks at a smaller than county level. The health data is limited to the county level and can not be broken down into smaller increments. This highlights one of the limitations of this study, which is that among a county there can be a very high variability among the data. While the image clearly shows high percentages of black populations near industrial sites, my data looks at the diversity of the entire counties which extend miles from the Mississippi River and these industrial sites. 
+
+The limitation of this dataset of being broken down by county, instead of even smaller regions, will be important to the rest of the analysis. While people along the Mississippi River may experience adverse health impacts, this may not be reflected in the health data as it will be diluted by the rest of the county's health.
 
