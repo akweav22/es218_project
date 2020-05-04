@@ -1,8 +1,13 @@
 ---
-title: "Ashley_Health_Final"
+title: "Exploring Potential Environmental Racism in Cancer Alley, Louisiana"
 author: "Ashley Weaver"
-date: "4/21/2020"
-output: html_document
+date: "May 2020"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 4
+    code_folding: hide
+    
 ---
 
 ```{r setup, include=FALSE}
