@@ -1,32 +1,44 @@
 ---
-title: "Ashley_HealthData"
+title: "Exploring Potential Environmental Racism in Cancer Alley, Louisiana"
 author: "Ashley Weaver"
 date: "5/1/2020"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
-# Exploring Potential Environmental Racism in Cancer Alley, Louisiana
 
 ## Introduction
-Cancer Alley, Louisiana is an area along the Mississippi River between Baton Rouge and New Orleans. It derived its notorious nickname, Cancer Alley, from the abundance of oil refineries and petrochemical companies along the river. It is already known that this area has an unusually high rate of cancers, which is attributed to the air and water contamination by industry. Environmental Racism in Cancer Alley, Louisiana has previously been explored but mostly in terms of cancer. I will be exploring the other potential health risks that people living in Cancer Alley experience compared to the rest of Louisiana.
+Cancer Alley, Louisiana is an area along the Mississippi River between Baton Rouge and New Orleans. It derived its notorious nickname, Cancer Alley, from the abundance of oil refineries and petrochemical companies along the river. It is already known that this area has an unusually high rate of cancers, which is attributed to the air and water contamination by industry. Environmental Racism in Cancer Alley, Louisiana has previously been explored but mostly in terms of cancer. I will be exploring the other potential health risks that people living in Cancer Alley experience compared to the rest of Louisiana. I will also look at other factors that could explain differences in quality of health by county.
 
 ## Methods
 The first portion of my analysis will focus on race data for counties that are considered to be part of Cancer Alley. These counties include: East Baton Rouge, West Baton Rouge, Ascension, St. John the Baptist, Iberville, St. Charles, Jefferson, and Orleans. My analysis will explore the differences in diversity of these areas compared to one another and the state as a whole. This will be followed by a discussion of the limitation of my racial analysis given the structure of the data. 
 
-The second portion of my analysis will be a review of 
+The second part of my analysis will look at race and health data in the entire state of Louisiana. This portion of the analysis will focus on finding corrolation between poor health and percentage of minorities in a county. This will include scatter plots that examine health as a function of percentage of minorities in the community. This will give a more hollistic view of Louisiana's health by race. These data will then be compared to other states in the United States to 
+
+The third part of my analysis will focus primarily on the health 
+
+The final portion of my analysis will review other factors that could be contributing to adverse health effects. This will involved a 
 
 
 ## Results and Discussion
+
+### Cancer Alley Race Data
+
+The first plot is a bar plot comparing the percentage white population in all the Cancer Alley counties. The red line on this plot represents the average percentage of white residents in each county, which is `round(racedat1$LA_White_Perc)`. 
 ```{r pre_process_race, include = FALSE}
 
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+library(lattice)
 
-racedat <- read.csv("cc-est2018-alldata-22.csv")
+racedat <- read.csv("../Data/cc-est2018-alldata-22.csv")
 
 racedat1 <- racedat %>% 
   filter(YEAR == 9,
@@ -53,25 +65,100 @@ CAracedat1 <- racedat1  %>%
                                 "Orleans Parish"))
 ```
 
-```{r plot_race}
+```{r plot_race, fig.width=7, fig.height=3.4}
 
 ggplot(CAracedat1, aes(x = CTYNAME, y = Perc_White, fill = CTYNAME)) +
    geom_bar(stat="identity", width=1, color="white")  +
    labs(x = "County", y = "Percentage White", fill = "County") +
-   geom_abline(slope = 0, intercept = 64.5, col = "red")
+   geom_abline(slope = 0, intercept = 64.5, col = "red") +
+   geom_text(aes(label= round(Perc_White)), 
+             position=position_dodge(width=0.9), vjust=-0.25)
 
 
 ```
 
-<img src="https://due-parsons.github.io/methods3-fall2015/img/industry-infrastructure-cancer-alley-la-and-detroit-mi/YXkdFV7.jpg"  width = "300"  height = "200">
+<img src="https://due-parsons.github.io/methods3-fall2015/img/industry-infrastructure-cancer-alley-la-and-detroit-mi/YXkdFV7.jpg"  width = "400"  height = "300">
 
+### Comparing Race and Health Data for the Entire State of Louisiana
+```{r pre_process_racehealth}
 
-```{r pro_process_health}
+hdat <- read.csv("../Data/R11371317_SL050.csv")
 
-hdat <- read.csv("R11371317_SL050.csv")
+hdat4 <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(PoorHealth = "SE_T002_001", CTYNAME = "Geo_NAME")
+
+racedat4 <- racedat1 %>% 
+  select(CTYNAME, Perc_Minority)
+
+rhcombined <- left_join(hdat4, racedat4, by = "CTYNAME")
 
 ```
 
-# References
+```{r minorityhealth_scatter}
 
-Stepnick, Micheal. Industry & Infrastructure: Cancer Alley, LA and Detroit, MI. 2015
+ggplot(rhcombined, aes(x= `Perc_Minority`, y = `PoorHealth`)) + 
+             geom_point() + 
+             geom_abline( intercept=15, slope=0.20) + 
+             labs(x = "Percent Minority Population", 
+                  y = "Percentage of Fair to Poor Health Reported")
+
+```
+
+#### Analylizing Data Distributions
+```{r pre_process_qqplot_Health}
+
+ggplot(rhcombined) + aes(sample = PoorHealth) + geom_qq(distribution = qnorm) +
+  geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + ylab("Poor Health")
+
+
+```
+
+```{r qqtest_prematuredeath}
+
+hdatdeath <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(PrematureDeath = "SE_T007_001", CTYNAME = "Geo_NAME") %>% 
+  arrange(PrematureDeath)
+  
+ggplot(hdatdeath) + aes(sample = PrematureDeath) + 
+  geom_qq(distribution = qnorm) +
+  geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + ylab("Premature Deaths")
+
+hdatchild <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(ChildMortality = "SE_NV006_002", CTYNAME = "Geo_NAME") %>% 
+  arrange(ChildMortality)
+
+ggplot(hdatchild) + aes(sample = ChildMortality) + 
+  geom_qq(distribution = qnorm) +
+  geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + 
+  ylab("Child Mortality Rate per 1,000 Population")
+
+hdatobese <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(Perc_Obese = "SE_T012_003", CTYNAME = "Geo_NAME") %>% 
+  arrange(Perc_Obese)
+
+USmeanObesity <- mean(hdat$SE_T012_003)
+USmeanChildMortality <- mean(hdat$SE_NV006_002, na.rm = TRUE)
+
+```
+
+### Cancer Alley Health Data
+
+### Other Factors that could be Impacting Health
+
+#### Connection to Race
+
+## Conclusions and Recommendations
+
+Though there has been previous research indicating a corrolation between poor health and living in Cancer Alley, Louisiana, these data do not indicate this relationship. It appears that though minority communities do expierence a higher degree of heath issues, there is no demonstrated corrolation, by these data, of minorities in Cancer Alley experiencing adverse health impacts greater than other counties. Other factors that could be impacting health in these communities...
+
+Further research would need to be conducted to demonstrate negative health impacts, other than cancers, in these regions. This study was limited to county wide data, though Stepnicks plot showed that closer to the Mississippi River there were higher percentages of black populations. This means that black populations tend to live closer to these industrial sites, but the county as a whole could be much more diverse. Similarly, the data for poor health in Cancer Alley was limited to entire communities, though the people that are most directly impacted live right on the Mississippi River. I suspect that these black populations living in Cancer Alley right next to the industrial sites would have a high level of other non-cancer health issues, but further research would be needed to make such conclusions. Future studies would need to isolate smaller regions within each county for analysis. This could involve breaking down the health data by zip code. It would be very effective to analyize health and diversity as a function of distance from these industrial sites (though data collection for this might be challenging).
+
+## References
+
+Stepnick, Micheal. (2015). Industry & Infrastructure: Cancer Alley, LA and Detroit, MI. 
+
+

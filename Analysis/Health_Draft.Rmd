@@ -65,6 +65,15 @@ ggplot(racedat2, aes(x = "", y = "Value", fill = "Louisiana")) +
   theme_void() +
   labs(fill = "Louisiana Races")
 
+hdatdeath1 <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(LifeLost = "SE_T007_002", CTYNAME = "Geo_NAME") %>% 
+  arrange(LifeLost)
+
+ggplot(hdatdeath1) + aes(sample = LifeLost) + 
+  geom_qq(distribution = qnorm) +
+  geom_qq_line(line.p = c(0.25, 0.75), col = "blue") + ylab("Life Lost")
+
 
 ```
 
