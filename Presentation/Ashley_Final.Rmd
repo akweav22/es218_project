@@ -25,3 +25,30 @@ There are measures of increased cancer risk and racial data for some of the coun
 This study will be focused on exploring race and health data in the state of Louisiana to assess whether there is a link between health problems and race, particularly in Cancer Alley. It is important to note that this study is limited to looking at data by counties, though Cancer Alley itself is not entire counties. Populations that are closer to the industries and the Mississippi River (where these industries dump waste) are more likely to be impacted in terms of health. Since the study looks at health in Louisiana at a county level, it is possible that the adverse health impacts to communities on the river will not be reflected by the county-wide data.
 
 
+
+## Methods
+
+Three difference R packages were utilized to create the following analysis. The dplyr package was used extensively to create new descriptive variables and reorganize and restructure data frames to facilitate the analysis. The ggplot2 package was used in order to visualize the analysis through the creation of a variety of different plot types. Finally, the tidyr package was used to combine data from the race and health datasets so that they could be analyzed on the same plot.
+
+The first portion of my analysis will focus on race data for counties that are considered to be part of Cancer Alley. These counties include: East Baton Rouge, West Baton Rouge, Ascension, St. John the Baptist, Iberville, St. Charles, Jefferson, and Orleans. My analysis will explore the differences in diversity of these areas compared to one another and the state as a whole. This will be followed by a discussion of the limitation of my racial analysis given the structure of the data. 
+
+The second part of my analysis will look at race and health data in the entire state of Louisiana. This portion of the analysis will focus on finding correlation between poor health and percentage of minorities in a county. This will include a scatter plot that examines health as a function of percentage of minorities in the community. This will give a more holistic view of Louisiana's health by race. This will be followed by theoretical qq-plots to assess the normality of the data and isolate particular counties in Louisiana that appear to be in worse health. The health data will then be compared to other states in the United States to assess Louisiana's statewide health compared to national health.
+
+The third part of my analysis will focus primarily on the health in the counties that are part of Cancer Alley. This portion of the analysis uses a box plot to compare the percentage poor health in the counties of Cancer Valley, Louisiana to percentage poor health in the state and country as a whole.  
+
+The final portion of my analysis will review other factors that could be contributing to adverse health effects. This will involve an evaluation of the potential impact of lack of health insurance on Louisiana. This will be demonstrated through box plots that will compare the lack of insurance by age in the US and lack of insurance by age in Louisiana. Comparing the difference between National lack of insurance to just state lack of insurance in Louisiana will give us a better idea of if insurance (or lack thereof) can be used to explain the health disparity between most U.S. States and Louisiana. Next, this section will explore potential causes of obesity in Louisiana, which is shown in section 2 ("Comparing Race and Health Data for the Entire State of Louisiana") to have the second highest rate of obesity in the US. This analysis will involve the use of scatterplots to compare obesity in Louisiana to access to healthy foods and physical inactivity.
+
+
+
+## Results and Discussion
+
+### Cancer Alley Race Data
+
+```{r packages, include = FALSE}
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+```
+
