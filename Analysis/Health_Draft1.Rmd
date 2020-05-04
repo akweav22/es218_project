@@ -5,7 +5,8 @@ date: "May 2020"
 output: 
   html_document:
     toc: true
-    toc_depth: 3
+    toc_depth: 4
+    code_folding: hide
 
 ---
 
@@ -15,24 +16,26 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 ## Introduction
 
-Cancer Alley, Louisiana is an area along the Mississippi River between Baton Rouge and New Orleans. It derived its notorious nickname, Cancer Alley, from the abundance of oil refineries and petrochemical companies along the river. It is already known that this area has an unusually high rate of cancers, which is attributed to the air and water contamination by industry. Environmental Racism in Cancer Alley, Louisiana has previously been explored but mostly in terms of cancer. I will be exploring the other potential health risks that people living in Cancer Alley experience compared to the rest of Louisiana. I will also look at other factors that could explain differences in quality of health by county.
+Cancer Alley, Louisiana is an area along the Mississippi River between Baton Rouge and New Orleans. It derived its notorious nickname, Cancer Alley, from the abundance of oil refineries and petrochemical companies along the river. It is already known that this area has an unusually high rate of cancers, which is attributed to the air and water contamination by industry. Environmental Racism in Cancer Alley, Louisiana has previously been explored but mostly in terms of cancer. This study will be exploring the other potential health risks that people living in Cancer Alley experience compared to the rest of Louisiana. This study will also look at other factors that could explain differences in quality of health by county.
 
-Cancer Instances
+The state of Louisiana is known for having very limited environmental regulations and therefore very high levels of pollution. Louisiana was ranked by US News as worst pollution state in terms of exposure to pollution and related health risks. Additionally, there are numerous articles documenting the lack of enforcement of federal clean air, clean water, and hazardous waste laws. The lack of environmental regulation is part of the reason for the abundance of industrial sites in the state. High levels of industry and low levels of environmental protection have lead to adverse health impacts throughout the state. Previous studies have documented the effects of these industrial sites on the number of cancer cases in the state.
 
-It is important to note that this study is limited to looking at data by counties, though Cancer Alley itself is not entire counties. Populations that are closer to the industries and the Mississippi River (where these industries dump waste) are more likely to be impacted in terms of health. Since the study looks at health in Louisiana at a county level, it is possible that the adverse health impacts to communities on the river will not be reflected by the county-wide data.
+There are measures of increased cancer risk and racial data for some of the counties along what is known as Cancer Alley. For instance, the lifetime risk of cancer in St. John Baptist is 800 times higher than an average american (Pasley 2020). Nationally, there has been a 16% decrease in toxic releases by plants over the last 30 year, but in Cancer Alley reported toxic releases grew by 25%. It is also noted that these oil refinery and chemical plants are located next to African American communities along the Mississippi River (Pasley 2020). 
+
+This study will be focused on exploring race and health data in the state of Louisiana to assess whether there is a link between health problems and race, particularly in Cancer Alley. It is important to note that this study is limited to looking at data by counties, though Cancer Alley itself is not entire counties. Populations that are closer to the industries and the Mississippi River (where these industries dump waste) are more likely to be impacted in terms of health. Since the study looks at health in Louisiana at a county level, it is possible that the adverse health impacts to communities on the river will not be reflected by the county-wide data.
 
 
 ## Methods
 
-Overall packages used
+Three difference R packages were utilized to create the following analysis. The dplyr package was used extensively to create new descriptive variables and reorganize and restructure dataframes to facilitate the analysis. The ggplot2 package was used in order to visualize the analysis through the creation of a variety of different plot types. Finally, the tidyr package was used to combine data from the race and health datasets so that they could be analyized on the same plot.
 
 The first portion of my analysis will focus on race data for counties that are considered to be part of Cancer Alley. These counties include: East Baton Rouge, West Baton Rouge, Ascension, St. John the Baptist, Iberville, St. Charles, Jefferson, and Orleans. My analysis will explore the differences in diversity of these areas compared to one another and the state as a whole. This will be followed by a discussion of the limitation of my racial analysis given the structure of the data. 
 
 The second part of my analysis will look at race and health data in the entire state of Louisiana. This portion of the analysis will focus on finding corrolation between poor health and percentage of minorities in a county. This will include a scatter plot that examines health as a function of percentage of minorities in the community. This will give a more hollistic view of Louisiana's health by race. This will be followed by theoretical qq-plots to assess the normality of the data and isolate particular counties in Louisiana that appear to be in worse health. The health data will then be compared to other states in the United States to assess Louisiana's statewide health compared to national health.
 
-The third part of my analysis will focus primarily on the health in that counties thata are part of Cancer Alley.
+The third part of my analysis will focus primarily on the health in that counties that are part of Cancer Alley. This portion of the analysis uses a box plot to compare the percentage poor health in the counties of Cancer Valley, Louisiana to percentage poor health in the state and country as a whole.  
 
-The final portion of my analysis will review other factors that could be contributing to adverse health effects. This will involved a 
+The final portion of my analysis will review other factors that could be contributing to adverse health effects. This will involved a evaluation of the potential impact of lack of heatlh insurance on Louisiana. This will be demonstrated through box plots that will compare the lack of insurance by age in the US and lack of insurance by age in Louisiana. Comparing the difference between National lack of insurance to just state lack of insurance in Louisiana will give us a better idea of if insurance (or lack thereof) can be used to explain the health disparity between most U.S. States and Louisiana. Next, this section will explore potential causes of obesity in Louisiana, which is shown in section 2 ("Comparing Race and Health Data for the Entire State of Louisiana") to have the second highest rate of obesity in the US. This analysis will involve the use of scatterplots to compare obesity in Louisiana to access to healthy foods and physical inactivity.
 
 
 ## Results and Discussion
@@ -44,7 +47,6 @@ The final portion of my analysis will review other factors that could be contrib
 library(dplyr)
 library(ggplot2)
 library(tidyr)
-library(lattice)
 
 ```
 
@@ -81,7 +83,7 @@ CAracedat1 <- racedat1  %>%
                                 "Orleans Parish"))
 ```
 
-The first plot is a bar plot comparing the percentage white population in all the Cancer Alley counties. The red line on this plot represents the average percentage of white residents in each county, which is 65%. Of the counties that are part of Cancer Alley, five have a lower percentage of white population than the rest of the state of Louisiana. These five counties include East Baton Rouge, Iberville, Orleans, St. John the Baptist, and West Baton Rouge. These data suggest that much of the population that lives in Cancer Alley is not white. As previous studies have implicated Cancer Alley as a location with high levels of environmental racism, it should be expected that these communities are largely comprised of minorities. The fact that three of these counties (Asencions, Jefferson, and St. Charles) have a higher percentage white population than the rest of the state is more than I expected.
+The first plot is a bar plot comparing the percentage white population in all the Cancer Alley counties. The red line on this plot represents the average percentage of white residents in each county, which is 65%. Of the counties that are part of Cancer Alley, five have a lower percentage of white population than the rest of the state of Louisiana. These five counties include East Baton Rouge, Iberville, Orleans, St. John the Baptist, and West Baton Rouge. These data suggest that much of the population that lives in Cancer Alley is not white. As previous studies have implicated Cancer Alley as a location with high levels of environmental racism, it should be expected that these communities are largely comprised of minorities. The fact that three of these counties (Ascensions, Jefferson, and St. Charles) have a higher percentage white population than the rest of the state is more than I expected.
 
 ```{r plot_race, fig.width=7, fig.height=3.4}
 
@@ -130,13 +132,13 @@ It is important to understand the overall health of minorities in Louisiana to a
 # Plotting the Percentage of Minorities against Percentage of Poor Health Reported in Louisiana
 ggplot(rhcombined, aes(x= `Perc_Minority`, y = `PoorHealth`)) + 
              geom_point() + 
-             geom_abline(intercept=15, slope=0.20) + 
+             stat_smooth(method = "loess", se = FALSE, span = 1) +                          geom_abline(intercept=15, slope=0.20) + 
              labs(x = "Percent Minority Population", 
                   y = "Percentage of Fair to Poor Health Reported")
 
 ```
 
-The above plot demonstrates that there is a corrolation between percentage minorities and poor health. The plot suggests that as the percentage of minorities in the population increases the percentage of fair to poor health reported also increases. This suggests that overall, in the state of Louisiana, there could be a connection between poor health and the counties with more minorities. Environmental racism is a potential explaination for this trend, but the potential causes for the fair to poor health of the minorities would need to be evaluated. The "Other Factors that could be Impacting Health" section will further discuss potential reasons for this trend.
+The above plot demonstrates that there is a corrolation between percentage minorities and poor health. The plot has both a linear slope and a loess fit to determine if a linear slope best represents the data. The loess fit follows the linear slope pretty well until the last portion of the data where it increases because of the three outliers. The plot suggests that as the percentage of minorities in the population increases the percentage of fair to poor health reported also increases. This suggests that overall, in the state of Louisiana, there could be a connection between poor health and the counties with more minorities. Environmental racism is a potential explaination for this trend, but the potential causes for the fair to poor health of the minorities would need to be evaluated. The "Other Factors that could be Impacting Health" section will further discuss potential reasons for this trend.
 
 #### Analylizing Data Distributions
 
@@ -171,32 +173,207 @@ The theoretical QQ plot of premature deaths in Louisiana show that these data do
 
 #### Louisiana Health Compared to Health in the United States
 
-```{r pre_process_USmedian_polish, fig.height = 2.5, fig.width = 3.5}
+```{r pre_process_USmeans, fig.height = 2.5, fig.width = 3.5}
 
+# Health Dataset with mean values for all of the United States
 hdatUS <- hdat %>% 
   select(PoorHealth = "SE_T002_001", State = "Geo_STATE", 
-         County = "Geo_QNAME") %>% 
+         County = "Geo_QNAME", PrematureMortality = "SE_NV006_003", 
+         Perc_Obese = "SE_T012_003") %>% 
   arrange(State) %>% 
+  group_by(State) %>% 
   na.omit() %>% 
-  mutate(State_mean = mean(PoorHealth))
+  mutate(State_PoorHealth = mean(PoorHealth), State_Obese = mean(Perc_Obese),
+         State_PrematureMortality = mean(PrematureMortality)) %>% 
+  select(State, State_PoorHealth, State_Obese, State_PrematureMortality) %>% 
+  distinct()
+
+```
+
+The next three plots will compare health of Louisiana to other U.S. states. The red line on all the plots indicates the value that corrisponds with the state of Louisiana. The states are numbered but do not labelled, as the focus is solely on the state of Louisiana compared to the other states. The spaces where there are bars missing indicate a lack of health data for these 5 states.
+
+```{r barplots_UShealth, fig.height = 2.5, fig.width = 5}
+
+# Generates plot of Average Percent of Adults That Report Fair or Poor Health by State
+ggplot(hdatUS, aes(x = State, y = State_PoorHealth, fill = State)) +
+         geom_bar(stat = "identity") +
+         coord_flip() + 
+         geom_vline(xintercept = 22, col = "red", alpha = 0.4) +
+         scale_y_continuous(
+           name = "Average Percent of Adults That Report Fair or Poor Health")
+
+# Generates plot of Premature Age-adjusted Mortality Rate per 100,000 Population by State
+ggplot(hdatUS, aes(x = State, y = State_PrematureMortality, fill = State)) +
+         geom_bar(stat = "identity") +
+         coord_flip() + 
+         geom_vline(xintercept = 22, col = "red", alpha = 0.4) +
+         scale_y_continuous(
+           name = 
+             "Premature Age-adjusted Mortality Rate per 100,000 Population")
+
+# Generates plot of Percent Obese Persons (20 Years and Over) by State
+ggplot(hdatUS, aes(x = State, y = State_Obese, fill = State)) +
+         geom_bar(stat = "identity") +
+         coord_flip() + 
+         geom_vline(xintercept = 22, col = "red", alpha = 0.4) +
+         scale_y_continuous(
+           name = 
+             "Percent Obese Persons (20 Years and Over)")
+
+```
+
+Looking at these plots it is very clear that, compared to other U.S. states, the population in Louisiana overall has some of the worst health. The first plot indicates that Louisiana is in the top 5 states that had the highest reported fair or poor health. The second plot indicates that Louisiana has the seventh highest Premature Mortality Rate per 100,000 population of all the US States. The third plot indicates that Louisiana has the second highest percentage obese persons of all of the US States. 
+
+The high rates of poor health, premature deaths, and obesity suggest that Louisiana is in much worse health by comparison to other U.S. states. The poor overall health of Louisiana could possibly have connections to their weak environmental regulations, which enable industrial waste to contaminate their air and water. That said, further research would be needed to fully demonstrate a link between their lack of environmental regulation and adverse health impacts.
+
+### Cancer Alley Health Data
+
+The next plot will hone in on health data specifically in Cancer Alley, Louisiana to determine if there is a corrolation between poor health and these counties. The navy blue line represents the average percent reported fair or poor health in all of the United State. The red line represents the average percent reported fair or poor health in the state of Louisiana.
+
+```{r CA_Health, fig.width=7, fig.height=3.4}
+
+# Creating table of Cancer Alley Health Data
+CA_Health <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(PoorHealth = "SE_T002_001", Perc_Obese = "SE_T012_003",
+         PrematureMortality = "SE_NV006_003", CTYNAME = "Geo_NAME") %>% 
+  filter(CTYNAME %in% c("East Baton Rouge Parish", 
+                        "West Baton Rouge Parish",
+                        "Ascension Parish",
+                        "St. John the Baptist Parish",
+                        "Iberville Parish",
+                        "St. Charles Parish",
+                        "Jefferson Parish",
+                        "Orleans Parish"))
+# Calculating the mean poor health in the U.S. and Louisiana
+USmeanPoorHealth <- mean(hdat$SE_T002_001, na.rm = TRUE)
+LouisianaPoorHealth <- mean(hdat4$PoorHealth)
+
+# Generating bar blot of Cancer Alley Poor Health with Louisiana and U.S. Poor Health Averages
+ggplot(CA_Health, aes(x = CTYNAME, y = PoorHealth, fill = CTYNAME)) +
+   geom_bar(stat="identity", width=1, color="white")  +
+   labs(x = "County", y = "Percent Reported Fair or Poor Health", 
+        fill = "County") +
+   geom_abline(slope = 0, intercept = 16.9, col = "red") +
+   geom_abline(slope = 0, intercept = 22.5, col = "navyblue") +
+   geom_text(aes(label= round(PoorHealth)), 
+             position=position_dodge(width=0.9), vjust=-0.25)
 
 
 ```
 
-### Cancer Alley Health Data
+The percentage of poor health in Cancer Alley, Louisiana counties is at or above the poor health reported in the United States. That said, most of percentages of fair or poor health reported in these counties are below the average for Louisiana. This indicates that there tend to be higher levels of poor health in Louisiana than in the United States. Whether poor health is, in fact, affected by living in Cancer Alley can not be determined by this graph. The health impacts of living in Cancer Alley would need to be assessed at a level that is smaller than the county level to definitively convey adverse health impacts on the communities in and closest to the Cancer Alley region along the Mississippi River.
 
 ### Other Factors that could be Impacting Health
 
-#### Connection to Race
+It was made clear by previous analysis that the state of Louisiana has significantly poorer health than most other U.S. States. This section covers some other factors that could be impacting health in Louisiana outside of potential environmental factors.
+
+#### Health Insurance
+
+The following two plots explore the differences in percentage of the Population without insurance by age in the U.S. as a whole and in only Louisiana. 
+
+```{r HealthI_US, fig.height = 3, fig.width = 4}
+
+# Creating Dataset for Insurance by Age in United States
+hdat_in_US <- hdat %>% 
+  select(Under19 = "SE_T006_001", 
+         To64 = "SE_T006_002") %>% 
+  pivot_longer(names_to = "Age", values_to = "Perc_Insurance", cols = 1:2)
+
+# Plotting Percentage of Population without Insurance by Age in United States
+ggplot(hdat_in_US, aes(x = Age, y = Perc_Insurance, col = Age)) + 
+  geom_boxplot() +
+  labs(y = "Percentage without Insurance") +
+  ggtitle("United States")
+
+```
+```{r Health_Insurance, fig.height = 3, fig.width = 4}
+
+# Creating Dataset for Insurance by Age in Louisiana
+hdat_in <- hdat %>% 
+  filter(Geo_STATE == 22) %>%
+  select(Under19 = "SE_T006_001", 
+         To64 = "SE_T006_002") %>% 
+  pivot_longer(names_to = "Age", values_to = "Perc_Insurance", cols = 1:2)
+
+# Plotting Percentage of Population without Insurance by Age
+ggplot(hdat_in, aes(x = Age, y = Perc_Insurance, col = Age)) + 
+  geom_boxplot() +
+  labs(y = "Percentage without Insurance") +
+  ggtitle("Louisiana")
+
+```
+
+Compare US to Louisiana
+
+Look at Insurance ages Louisiana
+
+As lack of health insurance also could be an indication of lower incomes, another factor that count be contributing to the poor health of the state.
+
+A higher lack of health insurance in Louisiana is another possible explaination for the poor health in the state.
+
+#### Food and Exercise Availability
+
+The next two plots will look at the relationship between Louisiana's high obesity and food and exercise availability.
+
+```{r Obesity, fig.height = 3, fig.width = 4}
+
+# Creating Obesity Dataset for Louisiana
+hdatobese <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(Perc_Obese = "SE_T012_003", Perc_LHF_Access = "SE_T012_001",
+         Perc_Inactive = "SE_T012_004", CTYNAME = "Geo_NAME") %>% 
+  arrange(Perc_Obese)
+
+# Creating Scatterplot Comparing Limited Access to Healthy Food to Obesity 
+ggplot(hdatobese, aes(x = Perc_LHF_Access, y = Perc_Obese)) +
+  geom_point() + 
+  stat_smooth(method = "loess", se = FALSE, span = 1) +                       
+  labs(x = "Percent of Persons with Limited Healthy Food Access", 
+       y = "Percent Obese Persons (Over 20yrs)")
+
+# Creating Scatterplot Comparing Physical Inactivity to Obesity
+ggplot(hdatobese, aes(x = Perc_Inactive, y = Perc_Obese)) +
+  geom_point() + 
+  geom_abline(intercept = 4, slope = 1) +
+  labs(x = "Percent Physically Inactive Persons (Over 20 yrs)", 
+       y = "Percent Obese Persons (Over 20yrs)")
+
+```
+
+The plot on the left shows percent obesity as a function of percent persons with limited healthy food access. There does not appear to be a corrolation between the percent of persons with limited healthy food access to the percent obesity in Louisiana. The data is very spread out and does not point towards any trends. Though limited access to heatlhy food is often linked to obesity, this does not appear to be the case in Louisiana (at least at the county level).
+
+The plot on the right shows percent of obese persons as a function of percent of physically inactive persons. There appears to be a corrolation between percent physical inactivity and percent obesity in Louisiana. There is a small cluster of five points of counties with high percentages of inactive people but lower percentages of obesity than the rest of the trend. Overall, the counties in Louisiana that have higher percentages of inactivity, tend to also have higher percentages of obesity.
+
+The slope of the data shown on the right plot indicates that a 1% increase in inactivity appears to be corrolated with about a 1% increase obesity of a county. Though, using the slope, we see that percent obesity appears to consistently be 4% higher than percent inactivity. This indicates the additive shift of 4 to the intercept of the trendline so that it will more accurately reflect this trend in the data.
 
 ## Conclusions and Recommendations
 
-Though there has been previous research indicating a corrolation between poor health and living in Cancer Alley, Louisiana, these data do not indicate this relationship. It appears that though minority communities do expierence a higher degree of heath issues, there is no demonstrated corrolation, by these data, of minorities in Cancer Alley experiencing adverse health impacts greater than other counties. Other factors that could be impacting health in these communities...
+Though there has been previous research indicating a corrolation between poor health and living in Cancer Alley, Louisiana, these data do not indicate this relationship. It appears that though minority communities do expierence a higher degree of heath issues, there is no demonstrated corrolation by these data of minorities in Cancer Alley experiencing adverse health impacts greater than other counties. Other factors that could be impacting health in Louisiana could include a lack of insurance for those between the ages of 18 and 64, and high levels of physical inactivity. 
 
 Further research would need to be conducted to demonstrate negative health impacts, other than cancers, in these regions. This study was limited to county wide data, though Stepnicks plot showed that closer to the Mississippi River there were higher percentages of black populations. This means that black populations tend to live closer to these industrial sites, but the county as a whole could be much more diverse. Similarly, the data for poor health in Cancer Alley was limited to entire communities, though the people that are most directly impacted live right on the Mississippi River. I suspect that these black populations living in Cancer Alley right next to the industrial sites would have a high level of other non-cancer health issues, but further research would be needed to make such conclusions. Future studies would need to isolate smaller regions within each county for analysis. This could involve breaking down the health data by zip code. It would be very effective to analyize health and diversity as a function of distance from these industrial sites (though data collection for this might be challenging).
 
 ## References
+  
+  Census. (2019). County Characteristics Resident Population Estimates. US Census Bureau, Population Division. Retrived from: https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html
 
-Stepnick, Micheal. (2015). Industry & Infrastructure: Cancer Alley, LA and Detroit, MI. 
+  H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
+Springer-Verlag New York, 2016.
 
+  Hadley Wickham and Lionel Henry (2020). tidyr: Tidy Messy Data. R
+package version 1.0.2. https://CRAN.R-project.org/package=tidyr
+  
+  Hadley Wickham, Romain François, Lionel Henry and Kirill Müller
+(2020). dplyr: A Grammar of Data Manipulation. R package version
+0.8.4. https://CRAN.R-project.org/package=dplyr
+
+  Pasley, James. “Inside Louisiana's Horrifying 'Cancer Alley,' an 85-Mile Stretch of Pollution and Environmental Racism That's Now Dealing with Some of the Highest Coronavirus Death Rates in the Country.” Business Insider, Business Insider, 9 Apr. 2020, www.businessinsider.com/louisiana-cancer-alley-photos-oil-refineries-chemicals-pollution-2019-11.
+
+  Sarkar, Deepayan (2008) Lattice: Multivariate Data Visualization with
+R. Springer, New York. ISBN 978-0-387-75968-5
+  
+  Stepnick, Micheal. (2015). Industry & Infrastructure: Cancer Alley, LA and  Detroit, MI. Retrived from:  
+https://due-parsons.github.io/methods3-fall2015/projects/industry-infrastructure-cancer-alley-la-and-detroit-mi/
+
+  “These States Have the Least Amount of Pollution.” U.S. News &amp; World Report, U.S. News &amp; World Report, www.usnews.com/news/best-states/rankings/natural-environment/pollution.
 
