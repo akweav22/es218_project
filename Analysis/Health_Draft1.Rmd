@@ -304,13 +304,12 @@ ggplot(hdat_in, aes(x = Age, y = Perc_Insurance, col = Age)) +
 
 ```
 
-Compare US to Louisiana
+In both the United States and Louisiana people between the ages of 18 to 64 have much higher percentages of lacking insurance than people below the age of 19. In the entire United States half of the counties in the US have populations with roughly 16-25% people between 18 and 64 who do not have insurance. Half of the counties in Louisiana, on the other hand, have populations where roughly 24.5-27% of people between 18 and 64 do not have insurance. This is a much higher percentage of counties that have a lack of insurance than the United States as a whole. Though, as expected, the spread of the percent of population without insurance is much higher for the entire U.S. than just the state of Louisiana because it accounts for many more counties.
 
-Look at Insurance ages Louisiana
+Just looking at the plot of Louisiana it is clear that percentage of people without insurance by county is much greater for the age range of 18 to 64 than for people under 19. All quartiles of the boxplot for ages 18 to 64 are greater than all the quartiles of the boxplot for under 19. A total of 75%, the upper 3 quartiles, of the data in Louisiana for ages 18 to 64 is greater than the United States median of about 21%. In fact, the majority of Louisiana's data for the age range of 18 to 64 falls above the United States median of 21%. This means that overall, the counties in Louisiana tend to have a higher percentage of the population without insurance than an average U.S. county.
 
-As lack of health insurance also could be an indication of lower incomes, another factor that count be contributing to the poor health of the state.
+A higher lack of insurance in Louisiana, particularly amoung the agre range of 18 to 64, is another possible explaination for the poor health in the state. People without insurance are less likely to seek medical help when needed and get routinely check-ups, which would contributed to the reported poor health of residents in the state. A lack of health insurance could also be an indication of lower incomes, another factor that could be contributing to the poor health of the state by comparison to the United States as a whole.
 
-A higher lack of health insurance in Louisiana is another possible explaination for the poor health in the state.
 
 #### Food and Exercise Availability
 
