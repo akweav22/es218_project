@@ -269,3 +269,85 @@ ggplot(CA_Health, aes(x = CTYNAME, y = PoorHealth, fill = CTYNAME)) +
 The percentage of poor health in Cancer Alley, Louisiana counties is at or above the poor health reported in the United States. That said, most percentages of fair or poor health reported in these counties are below the average for Louisiana. This indicates that there tend to be higher levels of poor health in Louisiana than in the United States. Whether poor health is, in fact, affected by living in Cancer Alley can not be determined by this graph. The health impacts of living in Cancer Alley would need to be assessed at a level that is smaller than the county level to definitively convey adverse health impacts on the communities in and closest to the Cancer Alley region along the Mississippi River.
 
 
+### Other Factors that could be Impacting Health
+
+It was made clear by previous analysis that the state of Louisiana has significantly poorer health than most other U.S. States. This section covers some other factors that could be impacting health in Louisiana outside of potential environmental factors.
+
+#### Insurance
+
+The following two plots explore the differences in percentage of the Population without insurance by age in the U.S. as a whole and in only Louisiana. 
+
+```{r HealthI_US, fig.height = 3, fig.width = 4}
+
+# Creating Dataset for Insurance by Age in United States
+hdat_in_US <- hdat %>% 
+  select(Under19 = "SE_T006_001", 
+         To64 = "SE_T006_002") %>% 
+  pivot_longer(names_to = "Age", values_to = "Perc_Insurance", cols = 1:2)
+
+# Plotting Percentage of Population without Insurance by Age in United States
+ggplot(hdat_in_US, aes(x = Age, y = Perc_Insurance, col = Age)) + 
+  geom_boxplot() +
+  labs(y = "Percentage without Insurance") +
+  ggtitle("United States")
+
+```
+```{r Health_Insurance, fig.height = 3, fig.width = 4}
+
+# Creating Dataset for Insurance by Age in Louisiana
+hdat_in <- hdat %>% 
+  filter(Geo_STATE == 22) %>%
+  select(Under19 = "SE_T006_001", 
+         To64 = "SE_T006_002") %>% 
+  pivot_longer(names_to = "Age", values_to = "Perc_Insurance", cols = 1:2)
+
+# Plotting Percentage of Population without Insurance by Age
+ggplot(hdat_in, aes(x = Age, y = Perc_Insurance, col = Age)) + 
+  geom_boxplot() +
+  labs(y = "Percentage without Insurance") +
+  ggtitle("Louisiana")
+
+```
+
+In both the United States and Louisiana people between the ages of 18 to 64 have much higher percentages of lacking insurance than people below the age of 19. In the entire United States half of the counties in the US have populations with roughly 16-25% people between 18 and 64 who do not have insurance. Half of the counties in Louisiana, on the other hand, have populations where roughly 24.5-27% of people between 18 and 64 do not have insurance. This is a much higher percentage of counties that have a lack of insurance than the United States as a whole. Though, as expected, the spread of the percent of population without insurance is much higher for the entire U.S. than just the state of Louisiana because it accounts for many more counties.
+
+Just looking at the plot of Louisiana it is clear that the percentage of people without insurance by county is much greater for the age range of 18 to 64 than for people under 19. All quartiles of the boxplot for ages 18 to 64 are greater than all the quartiles of the boxplot for under 19. A total of 75%, the upper 3 quartiles, of the data in Louisiana for ages 18 to 64 is greater than the United States median of about 21%. In fact, the majority of Louisiana's data for the age range of 18 to 64 falls above the United States median of 21%. This means that overall, the counties in Louisiana tend to have a higher percentage of the population without insurance than an average U.S. county.
+
+A higher lack of insurance in Louisiana, particularly among the age range of 18 to 64, is another possible explanation for the poor health in the state. People without insurance are less likely to seek medical help when needed and get routine check-ups, which would contribute to the reported poor health of residents in the state. A lack of health insurance could also be an indication of lower incomes, another factor that could be contributing to the poor health of the state by comparison to the United States as a whole.
+
+
+#### Food and Exercise Availability
+
+The next two plots will look at the relationship between Louisiana's high obesity and food and exercise availability.
+
+```{r Obesity, fig.height = 3, fig.width = 4}
+
+# Creating Obesity Dataset for Louisiana
+hdatobese <- hdat %>% 
+  filter(Geo_STATE == 22) %>% 
+  select(Perc_Obese = "SE_T012_003", Perc_LHF_Access = "SE_T012_001",
+         Perc_Inactive = "SE_T012_004", CTYNAME = "Geo_NAME") %>% 
+  arrange(Perc_Obese)
+
+# Creating Scatterplot Comparing Limited Access to Healthy Food to Obesity 
+ggplot(hdatobese, aes(x = Perc_LHF_Access, y = Perc_Obese)) +
+  geom_point() + 
+  stat_smooth(method = "loess", se = FALSE, span = 1) +                       
+  labs(x = "Percent of Persons with Limited Healthy Food Access", 
+       y = "Percent Obese Persons (Over 20yrs)")
+
+# Creating Scatterplot Comparing Physical Inactivity to Obesity
+ggplot(hdatobese, aes(x = Perc_Inactive, y = Perc_Obese)) +
+  geom_point() + 
+  geom_abline(intercept = 4, slope = 1) +
+  labs(x = "Percent Physically Inactive Persons (Over 20 yrs)", 
+       y = "Percent Obese Persons (Over 20yrs)")
+
+```
+
+The plot on the left shows percent obesity as a function of percent persons with limited healthy food access. There does not appear to be a correlation between the percent of persons with limited healthy food access to the percent obesity in Louisiana. The data is very spread out and does not point towards any trends. Though limited access to healthy food is often linked to obesity, this does not appear to be the case in Louisiana (at least at the county level).
+
+The plot on the right shows percent of obese persons as a function of percent of physically inactive persons. There appears to be a correlation between percent physical inactivity and percent obesity in Louisiana. There is a small cluster of five points of counties with high percentages of inactive people but lower percentages of obesity than the rest of the trend. Overall, the counties in Louisiana that have higher percentages of inactivity, tend to also have higher percentages of obesity.
+
+The slope of the data shown on the right plot indicates that a 1% increase in inactivity appears to be correlated with about a 1% increase in obesity of a county. Though, using the slope, we see that percent obesity appears to consistently be 4% higher than percent inactivity. This indicates the additive shift of 4 to the intercept of the trendline so that it will more accurately reflect this trend in the data.
+
