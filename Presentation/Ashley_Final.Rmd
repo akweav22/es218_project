@@ -100,7 +100,7 @@ ggplot(CAracedat1, aes(x = CTYNAME, y = Perc_White, fill = CTYNAME)) +
 
 ```
 
-Due to the high percentage white population in Ascension, Jefferson, and St. Charles, I found a more precise map of race along Cancer Alley which is shown below.
+Due to the high percentage white population in Ascension, Jefferson, and St. Charles, I found a more precise map of race along Cancer Alley which is shown below (Stepnick).
 
 <img src="https://due-parsons.github.io/methods3-fall2015/img/industry-infrastructure-cancer-alley-la-and-detroit-mi/YXkdFV7.jpg"  width = "400"  height = "300">
 
@@ -267,3 +267,5 @@ ggplot(CA_Health, aes(x = CTYNAME, y = PoorHealth, fill = CTYNAME)) +
 ```
 
 The percentage of poor health in Cancer Alley, Louisiana counties is at or above the poor health reported in the United States. That said, most percentages of fair or poor health reported in these counties are below the average for Louisiana. This indicates that there tend to be higher levels of poor health in Louisiana than in the United States. Whether poor health is, in fact, affected by living in Cancer Alley can not be determined by this graph. The health impacts of living in Cancer Alley would need to be assessed at a level that is smaller than the county level to definitively convey adverse health impacts on the communities in and closest to the Cancer Alley region along the Mississippi River.
+
+
