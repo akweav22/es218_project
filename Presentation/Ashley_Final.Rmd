@@ -11,7 +11,17 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
-## Health Analysis
+## Introduction
+
+Cancer Alley, Louisiana is an area along the Mississippi River between Baton Rouge and New Orleans. It derived its notorious nickname, Cancer Alley, from the abundance of oil refineries and petrochemical companies along the river. It is already known that this area has an unusually high rate of cancers, which is attributed to the air and water contamination by industry. Environmental Racism in Cancer Alley, Louisiana has previously been explored but mostly in terms of cancer. This study will be exploring the other potential health risks that people living in Cancer Alley experience compared to the rest of Louisiana. This study will also look at other factors that could explain differences in quality of health by county.
+
+The state of Louisiana is known for having very limited environmental regulations and therefore very high levels of pollution. Louisiana was ranked by US News as the worst pollution state in terms of exposure to pollution and related health risks. Additionally, there are numerous articles documenting the lack of enforcement of federal clean air, clean water, and hazardous waste laws. The lack of environmental regulation is part of the reason for the abundance of industrial sites in the state. High levels of industry and low levels of environmental protection have led to adverse health impacts throughout the state. Previous studies have documented the effects of these industrial sites on the number of cancer cases in the state.
+
+There are measures of increased cancer risk and racial data for some of the counties along what is known as Cancer Alley. For instance, the lifetime risk of cancer in St. John Baptist is 800 times higher than an average american (Pasley 2020). Nationally, there has been a 16% decrease in toxic releases by plants over the last 30 year, but in Cancer Alley reported toxic releases grew by 25%. It is also noted that these oil refinery and chemical plants are located next to African American communities along the Mississippi River (Pasley 2020). 
+
+This study will be focused on exploring race and health data in the state of Louisiana to assess whether there is a link between health problems and race, particularly in Cancer Alley. It is important to note that this study is limited to looking at data by counties, though Cancer Alley itself is not entire counties. Populations that are closer to the industries and the Mississippi River (where these industries dump waste) are more likely to be impacted in terms of health. Since the study looks at health in Louisiana at a county level, it is possible that the adverse health impacts to communities on the river will not be reflected by the county-wide data.
+
+
