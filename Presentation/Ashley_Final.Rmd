@@ -227,7 +227,7 @@ ggplot(hdatUS, aes(x = reorder(State, State_PoorHealth, max) ,
 
 ```
 
-This first plot indicates that Louisiana has the fourth highest reported fair or poor health in the United States.
+This first plot indicates that Louisiana has the fourth highest percentage reported fair or poor health in the United States.
 
 ```{r barplots_UShealth2, fig.height = 3.5, fig.width = 6}
 
