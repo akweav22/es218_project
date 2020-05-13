@@ -267,7 +267,7 @@ The high rates of poor health, premature deaths, and obesity suggest that Louisi
 
 ### Cancer Alley Health Data
 
-The next plot will hone in on health data specifically in Cancer Alley, Louisiana to determine if there is a relationship between poor health and these counties. The navy blue line represents the average percent reported fair or poor health in all of the United States. The red line represents the average percent reported fair or poor health in the state of Louisiana.
+The next plot will hone in on health data specifically in Cancer Alley, Louisiana to determine if there is a relationship between poor health and these counties. The red line represents the average percent reported fair or poor health in all of the United States. The navy blue line represents the average percent reported fair or poor health in the state of Louisiana.
 
 ```{r CA_Health, fig.width=7, fig.height=3.4}
 
